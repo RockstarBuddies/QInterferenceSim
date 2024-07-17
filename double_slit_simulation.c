@@ -18,7 +18,7 @@ int main() {
 }
 
 double calculate_intensity(double x) {
-    double path_diff1 = sqrt((x - SLIT_DISTANCE / 2) * (x - SLit_DISTANCE / 2) + SCREEN_DISTANCE * SCREEN_DISTANCE);
+    double path_diff1 = sqrt((x - SLIT_DISTANCE / 2) * (x - SLIT_DISTANCE / 2) + SCREEN_DISTANCE * SCREEN_DISTANCE);
     double path_diff2 = sqrt((x + SLIT_DISTANCE / 2) * (x + SLIT_DISTANCE / 2) + SCREEN_DISTANCE * SCREEN_DISTANCE);
 
     double phase_diff = 2 * PI * (path_diff1 - path_diff2) / WAVELENGTH;
