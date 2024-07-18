@@ -3,11 +3,13 @@ import matplotlib.pyplot as plt
 
 # Constants and parameters
 PI = np.pi
-WAVELENGTH = 0.5
-SLIT_DISTANCE = 1.0
-SCREEN_DISTANCE = 10.0
-NUM_POINTS = 1000
-INTENSITY_SCALE = 1000.0
+
+WAVELENGTH=float(input("Enter Wavelength: "))
+SLIT_DISTANCE=float(input("Enter Slit Distance: "))
+SCREEN_DISTANCE=float(input("Enter Screen Distance: "))
+NUM_POINTS=int(input("Enter Number Of Points: "))
+INTENSITY_SCALE=float(input("Enter the Scale of Intensity: "))
+
 
 def calculate_intensity(x):
     path_diff1 = np.sqrt((x - SLIT_DISTANCE / 2) ** 2 + SCREEN_DISTANCE ** 2)
