@@ -2,48 +2,42 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define PI 3.14159265358979323846
-#define WAVELENGTH 0.5
-#define SLIT_DISTANCE 1.0
-#define SCREEN_DISTANCE 10.0
-#define NUM_POINTS 1000
-#define INTENSITY_SCALE 1000.0
 
-double calculate_intensity(double x);
-void simulate_experiment();
+#define PI 3.141592653589793
 
-int main() {
-    simulate_experiment();
-    return 0;
-}
 
-double calculate_intensity(double x) {
-    double path_diff1 = sqrt((x - SLIT_DISTANCE / 2) * (x - SLIT_DISTANCE / 2) + SCREEN_DISTANCE * SCREEN_DISTANCE);
-    double path_diff2 = sqrt((x + SLIT_DISTANCE / 2) * (x + SLIT_DISTANCE / 2) + SCREEN_DISTANCE * SCREEN_DISTANCE);
-
-    double phase_diff = 2 * PI * (path_diff1 - path_diff2) / WAVELENGTH;
-
-    double amplitude = 2.0 * cos(phase_diff / 2.0);
-    double intensity = amplitude * amplitude;
-
+double calculateIntensity(double wavelength, double slitDistance, double screenDistance, double x) {
+    double k = (2 * PI) / wavelength;
+    double d = slitDistance; 
+    double z = screenDistance; 
+    double pathDifference = (d * x) / z;
+    double phaseDifference = k * pathDifference;
+    double intensity = pow(cos(phaseDifference / 2), 2);
     return intensity;
 }
 
-void simulate_experiment() {
-    FILE* file = fopen("double_slit_simulation.txt", "w");
-    if (file == NULL) {
-        fprintf(stderr, "Error opening file for writing\n");
-        exit(1);
+int main() {
+    double wavelength, slitDistance, screenDistance, x;
+
+    // User inputs
+    printf("Enter the wavelength (in meters): ");
+    scanf("%lf", &wavelength);
+
+    printf("Enter the slit distance (in meters): ");
+    scanf("%lf", &slitDistance);
+
+    printf("Enter the screen distance (in meters): ");
+    scanf("%lf", &screenDistance);
+
+    
+    printf("\nPosition on Screen (m)\tIntensity\n");
+    printf("----------------------\t---------\n");
+
+    
+    for (x = -0.01; x <= 0.01; x += 0.0001) {
+        double intensity = calculateIntensity(wavelength, slitDistance, screenDistance, x);
+        printf("%-22.4e\t%-10.4e\n", x, intensity);
     }
 
-    double screen_range = 20.0;
-    double step_size = screen_range / NUM_POINTS;
-
-    for (int i = 0; i < NUM_POINTS; i++) {
-        double x = -screen_range / 2 + i * step_size;
-        double intensity = calculate_intensity(x) * INTENSITY_SCALE;
-        fprintf(file, "%lf %lf\n", x, intensity);
-    }
-
-    fclose(file);
+    return 0;
 }
